@@ -30,3 +30,55 @@ def predict_output(user_input: dict):
         "confidence": round(confidence, 4),
         "class_probabilities": class_probs
     }
+
+
+def get_model_info():
+
+    classifier = model.named_steps["classifier"]
+
+    return {
+        "model_type": type(classifier).__name__,
+        "model_version": MODEL_VERSION,
+        "classes": class_labels,
+        "features": list(model.feature_names_in_)
+        if hasattr(model, "feature_names_in_")
+        else [],
+        "number_of_features": len(model.feature_names_in_)
+        if hasattr(model, "feature_names_in_")
+        else 0,
+        "pipeline_steps": [
+            {
+                "name": name,
+                "type": type(step).__name__
+            }
+            for name, step in model.steps
+        ],
+        "feature_importance_available": hasattr(
+            classifier,
+            "feature_importances_"
+        )
+    }
+
+def get_feature_importance():
+
+    preprocessor = model.named_steps["preprocessor"]
+    classifier = model.named_steps["classifier"]
+
+    feature_names = preprocessor.get_feature_names_out()
+
+    importances = classifier.feature_importances_
+
+    feature_importance = dict(
+        sorted(
+            zip(feature_names, importances),
+            key=lambda x: x[1],
+            reverse=True
+        )
+    )
+
+    return {
+        "feature_importance": {
+            name: round(float(value), 4)
+            for name, value in feature_importance.items()
+        }
+    }

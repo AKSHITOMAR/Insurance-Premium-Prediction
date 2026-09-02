@@ -1,28 +1,47 @@
-from fastapi import FastAPI
-from fastapi.responses import JSONResponse
+from fastapi import FastAPI, HTTPException
 from schema.user_input import UserInput
 from schema.prediction_response import PredictionResponse
-from Model.predict import predict_output,MODEL_VERSION,model
+from Model.predict import (
+    predict_output,
+    get_model_info,
+    get_feature_importance,
+    MODEL_VERSION,
+    model
+)
 
-# STEP -1 :- To import the ml model - predict.py file is imported to use the predict_output function and model object
-# STEP - 2:- To create the fastapi app object 
-# STEP - 3 :- pydantic model to validate the input data - user_input.py file is imported to use the UserInput class for input validation
+app = FastAPI(
+    title="Insurance Premium Prediction API",
+    description="ML-powered insurance premium category prediction API",
+    version="1.0.0"
+)
 
-app=FastAPI()
 
-@app.get('/')
+@app.get("/")
 def home():
-    return {'message':'Insurance Premium Prediction API'}
+    return {
+        "message": "Insurance Premium Prediction API",
+        "version": MODEL_VERSION
+    }
 
-# Machine readable 
-@app.get('/health')
+
+@app.get("/health")
 def health_check():
     return {
-        'status': 'OK',
-        'version': MODEL_VERSION,
-        'model_loaded' : model is not None
+        "status": "OK",
+        "version": MODEL_VERSION,
+        "model_loaded": model is not None
     }
-# STEP - 4 :- END POINT 
+
+@app.get("/model-info")
+def model_info():
+
+    return get_model_info()
+
+
+@app.get("/feature-importance")
+def feature_importance():
+
+    return get_feature_importance()
 
 @app.post("/predict", response_model=PredictionResponse)
 def predict_premium(data: UserInput):
@@ -39,13 +58,14 @@ def predict_premium(data: UserInput):
     try:
         prediction = predict_output(user_input)
 
-        return JSONResponse(
-            status_code=200,
-            content={"response": prediction}
-        )
+        return prediction
 
     except Exception as e:
-        return JSONResponse(
+        raise HTTPException(
             status_code=500,
-            content={"error": str(e)}
+            detail=f"Prediction failed: {str(e)}"
         )
+
+
+
+
