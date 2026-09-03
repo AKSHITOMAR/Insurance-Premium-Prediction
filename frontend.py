@@ -25,7 +25,7 @@ st.set_page_config(
 # CONFIGURATION
 # ============================================================
 
-API_BASE_URL = "http://127.0.0.1:8000"
+API_BASE_URL = "http://13.235.19.194:8000"
 
 PREDICT_URL = f"{API_BASE_URL}/predict"
 FEATURE_URL = f"{API_BASE_URL}/feature-importance"
