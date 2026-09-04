@@ -31,8 +31,7 @@ with open("Model/model.pkl", "rb") as f:
 # LOAD DATASET
 # ============================================
 
-df = pd.read_csv(r"C:\Users\acer\Downloads\insurance.csv")
-
+df = pd.read_csv("data/insurance.csv")
 
 # ============================================
 # FEATURE ENGINEERING
