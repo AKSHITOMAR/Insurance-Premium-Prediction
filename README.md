@@ -1,53 +1,202 @@
 # 🏥 Insurance Premium Category Prediction
 
-An end-to-end Machine Learning project that predicts the insurance premium category based on a user's demographic, lifestyle, and financial information.
+An end-to-end **Machine Learning application** that predicts an insurance premium category — **Low, Medium, or High** — based on demographic, lifestyle, and financial information.
 
-The application is built using **FastAPI** for the backend, **Streamlit** for the frontend, and deployed using **Docker** on **AWS EC2**.
-
----
+The project combines a **Scikit-learn Machine Learning model**, **FastAPI REST API**, **Streamlit frontend**, and **Dockerized AWS deployment** to provide a complete production-style ML application.
 
 ## 🚀 Live Demo
 
-- **Frontend:** *(Add your Streamlit URL after deployment)*
-- **Backend API:** `http://51.20.76.52:8000`
-- **API Docs:** `http://51.20.76.52:8000/docs`
+### 🌐 Web Application
+
+**Try the live application:**
+https://insurance-premium-prediction-ctzu6phw7djgkwyvndcvbc.streamlit.app/
+
+### ⚡ Backend API
+
+The FastAPI backend is deployed on **AWS ECS using AWS Fargate**.
+
+The frontend communicates with the deployed backend to generate predictions.
+
+> **Note:** The backend uses a public ECS task IP and may change if the ECS task is replaced.
 
 ---
 
-## 📌 Features
+## ✨ Features
 
-- Predicts Insurance Premium Category
-- FastAPI REST API
-- Interactive Streamlit User Interface
-- Input validation using Pydantic
-- Dockerized application
-- AWS EC2 deployment
-- Health check endpoint
-- Modular project structure
+* 🔮 Predicts insurance premium category: **Low / Medium / High**
+* 📊 Provides prediction confidence and class probabilities
+* 🧮 Automatically calculates **BMI**
+* 🧠 Machine Learning model using **Random Forest**
+* ⚡ FastAPI REST API for model inference
+* 🎨 Interactive Streamlit frontend
+* ✅ Input validation using Pydantic
+* 📈 Model feature importance
+* 📋 Health summary based on user inputs
+* 🏗️ Project architecture visualization
+* 📊 Model evaluation metrics
+* 🐳 Dockerized backend
+* ☁️ AWS ECS Fargate deployment
+* 🚀 Streamlit Cloud frontend deployment
+* 🔗 GitHub-based source control
+
+---
+
+## 🧠 Machine Learning
+
+The project uses a **Random Forest Classifier** inside a Scikit-learn Pipeline.
+
+### Model Features
+
+The model uses the following engineered features:
+
+* `bmi`
+* `age_group`
+* `lifestyle_risk`
+* `city_tier`
+* `income_lpa`
+* `occupation`
+
+### Feature Engineering
+
+#### BMI
+
+BMI is calculated using:
+
+```text
+BMI = Weight (kg) / Height² (m)
+```
+
+#### Age Group
+
+Users are categorized into:
+
+* Young
+* Adult
+* Middle Aged
+* Senior
+
+#### Lifestyle Risk
+
+Lifestyle risk is determined using:
+
+* Smoking status
+* BMI
+
+Possible categories:
+
+* Low
+* Medium
+* High
+
+#### City Tier
+
+Cities are classified into:
+
+* Tier 1
+* Tier 2
+* Tier 3
+
+---
+
+## 📊 Model Evaluation
+
+The model was evaluated using **5-fold stratified cross-validation** and a separate test dataset.
+
+| Metric             |      Score |
+| ------------------ | ---------: |
+| Dataset Size       |        100 |
+| Training Samples   |         80 |
+| Testing Samples    |         20 |
+| 5-Fold CV Accuracy |    **81%** |
+| Test Accuracy      |    **75%** |
+| Weighted Precision | **78.39%** |
+| Weighted Recall    |    **75%** |
+| Weighted F1 Score  | **75.63%** |
+
+### Evaluation Methods
+
+* Stratified 5-Fold Cross Validation
+* Train/Test Split
+* Accuracy
+* Precision
+* Recall
+* F1 Score
+* Confusion Matrix
+* Classification Report
+
+---
+
+## 🏗️ System Architecture
+
+```text
+                    ┌─────────────────────────┐
+                    │       User / Client     │
+                    └────────────┬────────────┘
+                                 │
+                                 ▼
+                    ┌─────────────────────────┐
+                    │   Streamlit Frontend    │
+                    │     Streamlit Cloud     │
+                    └────────────┬────────────┘
+                                 │
+                         HTTP POST /predict
+                                 │
+                                 ▼
+                    ┌─────────────────────────┐
+                    │      FastAPI Backend    │
+                    │       AWS ECS Fargate   │
+                    └────────────┬────────────┘
+                                 │
+                                 ▼
+                    ┌─────────────────────────┐
+                    │  Feature Engineering    │
+                    │ BMI / Risk / Age / Tier │
+                    └────────────┬────────────┘
+                                 │
+                                 ▼
+                    ┌─────────────────────────┐
+                    │   Scikit-learn Pipeline │
+                    │    Random Forest Model  │
+                    └────────────┬────────────┘
+                                 │
+                                 ▼
+                    ┌─────────────────────────┐
+                    │ Prediction + Confidence │
+                    │  Class Probabilities    │
+                    └─────────────────────────┘
+```
 
 ---
 
 ## 🛠️ Tech Stack
 
 ### Machine Learning
-- Python
-- Scikit-learn
-- Pandas
-- NumPy
-- Joblib
+
+* Python
+* Scikit-learn
+* Pandas
+* NumPy
+* Joblib
 
 ### Backend
-- FastAPI
-- Uvicorn
-- Pydantic
+
+* FastAPI
+* Uvicorn
+* Pydantic
 
 ### Frontend
-- Streamlit
 
-### Deployment
-- Docker
-- AWS EC2
-- GitHub
+* Streamlit
+
+### Deployment & DevOps
+
+* Docker
+* AWS ECS
+* AWS Fargate
+* Amazon ECR
+* Streamlit Community Cloud
+* Git
+* GitHub
 
 ---
 
@@ -57,19 +206,32 @@ The application is built using **FastAPI** for the backend, **Streamlit** for th
 Insurance-Premium-Prediction/
 │
 ├── Model/
-│   ├── predict.py
-│   └── ...
+│   ├── model.pkl
+│   ├── model_evaluated.pkl
+│   └── predict.py
+│
+├── config/
+│   └── city_tier.py
 │
 ├── schema/
 │   ├── user_input.py
 │   └── prediction_response.py
 │
-├── config/
+├── data/
+│   └── insurance.csv
 │
 ├── app.py
 ├── frontend.py
+├── train_model.py
+├── evaluate_model.py
+├── model_evaluation.py
+├── check_model.py
+│
 ├── Dockerfile
+├── .dockerignore
+├── .gitignore
 ├── requirements.txt
+├── runtime.txt
 └── README.md
 ```
 
@@ -77,19 +239,31 @@ Insurance-Premium-Prediction/
 
 ## ⚙️ Installation
 
-Clone the repository
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/AKSHITOMAR/Insurance-Premium-Prediction.git
 ```
 
-Go to the project folder
+### 2. Navigate to the Project
 
 ```bash
 cd Insurance-Premium-Prediction
 ```
 
-Install dependencies
+### 3. Create a Virtual Environment
+
+```bash
+python -m venv myenv
+```
+
+Activate it on Windows:
+
+```bash
+myenv\Scripts\activate
+```
+
+### 4. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -97,61 +271,91 @@ pip install -r requirements.txt
 
 ---
 
-## ▶️ Run FastAPI
+## ▶️ Run FastAPI Locally
+
+Start the backend:
 
 ```bash
 uvicorn app:app --reload
 ```
 
-API will run on
+The API will be available at:
 
-```
+```text
 http://127.0.0.1:8000
 ```
 
-Swagger Documentation
+### Swagger API Documentation
 
-```
+Open:
+
+```text
 http://127.0.0.1:8000/docs
+```
+
+Available endpoints include:
+
+```text
+GET  /
+GET  /health
+GET  /model-info
+GET  /feature-importance
+POST /predict
 ```
 
 ---
 
-## ▶️ Run Streamlit
+## ▶️ Run Streamlit Locally
+
+Start the frontend:
 
 ```bash
 streamlit run frontend.py
 ```
 
-Application will open at
+The application will normally open at:
 
-```
+```text
 http://localhost:8501
 ```
 
+> When running the frontend locally, make sure the FastAPI backend is also running or configure the frontend to use the deployed backend.
+
 ---
 
-## 🐳 Docker
+## 🐳 Run with Docker
 
-Build Docker image
+### Build the Image
 
 ```bash
 docker build -t insurance-premium-api .
 ```
 
-Run Docker container
+### Run the Container
 
 ```bash
-docker run -p 8000:8000 insurance-premium-api
+docker run --rm -p 8000:8000 insurance-premium-api
+```
+
+The API will then be available at:
+
+```text
+http://127.0.0.1:8000
+```
+
+Swagger:
+
+```text
+http://127.0.0.1:8000/docs
 ```
 
 ---
 
-## 🌐 API Endpoint
+## 🌐 API Usage
 
 ### POST `/predict`
 
-### Sample Request
+Example request:
 
 ```json
 {
@@ -165,18 +369,16 @@ docker run -p 8000:8000 insurance-premium-api
 }
 ```
 
-### Sample Response
+Example response:
 
 ```json
 {
-    "response": {
-        "predicted_category": "Medium",
-        "confidence": 0.91,
-        "class_probabilities": {
-            "Low": 0.04,
-            "Medium": 0.91,
-            "High": 0.05
-        }
+    "predicted_category": "Medium",
+    "confidence": 0.54,
+    "class_probabilities": {
+        "High": 0.36,
+        "Low": 0.10,
+        "Medium": 0.54
     }
 }
 ```
@@ -185,18 +387,106 @@ docker run -p 8000:8000 insurance-premium-api
 
 ## ❤️ Health Check
 
-```
-GET /health
-```
+### GET `/health`
 
-Response
+The health endpoint verifies that the API and Machine Learning model are available.
+
+Example response:
 
 ```json
 {
     "status": "OK",
-    "version": "1.0",
+    "version": "1.0.0",
     "model_loaded": true
 }
+```
+
+---
+
+## 📊 Model Information
+
+### GET `/model-info`
+
+Returns information about the deployed Machine Learning model, including:
+
+* Model type
+* Model version
+* Prediction classes
+* Features
+* Number of features
+* Pipeline components
+* Feature importance availability
+
+### GET `/feature-importance`
+
+Returns the feature importance values generated by the Random Forest model.
+
+---
+
+## 🔐 Input Validation
+
+The FastAPI backend uses **Pydantic** to validate incoming data.
+
+Examples of validation include:
+
+* Age constraints
+* Positive weight
+* Valid height range
+* Income validation
+* Required input fields
+
+This helps prevent invalid data from reaching the Machine Learning model.
+
+---
+
+## ☁️ Deployment
+
+The project uses a split deployment architecture:
+
+### Frontend
+
+**Streamlit Community Cloud**
+
+```text
+GitHub Repository
+       ↓
+Streamlit Cloud
+       ↓
+Public Web Application
+```
+
+### Backend
+
+**AWS ECS + Fargate**
+
+```text
+Docker Image
+     ↓
+Amazon ECR
+     ↓
+AWS ECS
+     ↓
+AWS Fargate
+     ↓
+FastAPI API
+```
+
+### Complete Flow
+
+```text
+User
+ ↓
+Streamlit Cloud
+ ↓
+FastAPI API
+ ↓
+Feature Engineering
+ ↓
+Random Forest Model
+ ↓
+Prediction
+ ↓
+Streamlit UI
 ```
 
 ---
@@ -205,33 +495,52 @@ Response
 
 ### Streamlit Frontend
 
-*(Add screenshot after deployment)*
+*Add a screenshot of the deployed prediction interface here.*
+
+### Prediction Result
+
+*Add a screenshot showing the prediction, confidence, and class probabilities here.*
 
 ### FastAPI Swagger UI
 
-*(Add screenshot of `/docs` endpoint)*
+*Add a screenshot of the `/docs` endpoint here.*
 
 ---
 
-## 📈 Future Improvements
+## 🔮 Future Improvements
 
-- User Authentication
-- Database Integration
-- CI/CD Pipeline using GitHub Actions
-- HTTPS with Nginx and Let's Encrypt
-- Model Monitoring
-- Cloud Storage Integration
+* 🔐 User authentication and authorization
+* 🗄️ Database integration
+* 📦 Model versioning
+* 📈 Production model monitoring
+* 🔄 Automated CI/CD using GitHub Actions
+* 🔒 HTTPS and secure API access
+* 🌐 Custom domain
+* ⚖️ Load balancing using AWS Application Load Balancer
+* 📊 Larger and more diverse training dataset
+* 🧪 Automated testing
+* ☁️ Cloud-based model storage
+* 📉 Performance and latency monitoring
 
 ---
 
 ## 👩‍💻 Author
 
-**Akshi Tomar**
+### Akshi Tomar
 
-GitHub: https://github.com/AKSHITOMAR
+B.Tech CSE (AI & ML)
+
+GitHub:
+https://github.com/AKSHITOMAR
 
 ---
 
-## ⭐ If you like this project
+## ⭐ Support
 
-Please consider giving it a ⭐ on GitHub!
+If you found this project useful or interesting, consider giving the repository a ⭐ on GitHub!
+
+---
+
+## 📜 License
+
+This project is intended for educational and portfolio purposes.
