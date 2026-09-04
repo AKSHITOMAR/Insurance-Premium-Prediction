@@ -493,19 +493,26 @@ Streamlit UI
 
 ## 📸 Screenshots
 
-### Streamlit Frontend
+### 🏠 Streamlit Frontend
 
-*Add a screenshot of the deployed prediction interface here.*
+![Streamlit Frontend](screenshots/streamlit-home.png)
 
-### Prediction Result
+### 🎯 Prediction Result
 
-*Add a screenshot showing the prediction, confidence, and class probabilities here.*
+![Prediction Result](screenshots/prediction-result.png)
 
-### FastAPI Swagger UI
+### 📊 Feature Importance
 
-*Add a screenshot of the `/docs` endpoint here.*
+![Feature Importance](screenshots/feature-importance.png)
+
+### ⚡ FastAPI Swagger UI
+
+![FastAPI Swagger](screenshots/fastapi-swagger.png)
 
 ---
+
+
+
 
 ## 🔮 Future Improvements
 
