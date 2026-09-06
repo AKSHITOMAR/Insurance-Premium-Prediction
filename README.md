@@ -1,5 +1,6 @@
 # 🏥 Insurance Premium Category Prediction
 
+
 An end-to-end **Machine Learning application** that predicts an insurance premium category — **Low, Medium, or High** — based on demographic, lifestyle, and financial information.
 
 The project combines a **Scikit-learn Machine Learning model**, **FastAPI REST API**, **Streamlit frontend**, and **Dockerized AWS deployment** to provide a complete production-style ML application.
