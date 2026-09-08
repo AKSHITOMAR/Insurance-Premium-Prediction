@@ -502,7 +502,7 @@ Streamlit UI
 
 ![Prediction Result](screenshots/prediction-result.png)
 
-### 📊 Feature Importance
+### Feature Importance
 
 ![Feature Importance](screenshots/feature-importance.png)
 
@@ -511,8 +511,6 @@ Streamlit UI
 ![FastAPI Swagger](screenshots/fastapi-swagger.png)
 
 ---
-
-
 
 
 ## 🔮 Future Improvements
